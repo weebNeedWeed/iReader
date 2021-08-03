@@ -28,6 +28,18 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "90%",
     textAlign: "center",
   },
+  chapter: {
+    fontSize: "160%",
+    fontWeight: "bold",
+    backgroundColor: "rgba(0,0,0,1)",
+    position: "absolute",
+    right: "5%",
+    top: "5%",
+    color: "white",
+    padding: "5px",
+    border: "1px solid black",
+    borderRadius: "50%",
+  },
 }));
 
 export default useStyles;

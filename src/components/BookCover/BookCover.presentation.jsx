@@ -15,6 +15,9 @@ function BookCoverPresentation() {
           <Typography variant="caption" className={classes.bookName}>
             {"tuong thanh qua phu khi con tre"}
           </Typography>
+          <Typography variant="caption" className={classes.chapter}>
+            1543
+          </Typography>
         </Paper>
       </Link>
     </Grid>
