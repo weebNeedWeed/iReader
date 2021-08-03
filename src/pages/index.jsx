@@ -5,6 +5,7 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import BookCover from "../components/BookCover/BookCover.index";
 import Title from "../components/Title/Title.index";
+import Divider from "./../components/Divider/Divider.index";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -12,11 +13,6 @@ const useStyles = makeStyles((theme) => ({
   },
   gutterTop: {
     marginTop: "15px",
-  },
-  hr: {
-    width: "80%",
-    border: "1px solid black",
-    margin: "55px auto",
   },
 }));
 
@@ -36,7 +32,7 @@ export default function Home() {
           <BookCover />
         </Grid>
 
-        <hr className={classes.hr} />
+        <Divider />
 
         <Title isLink href={"/"}>
           {"tiên hiệp hot"}
@@ -45,7 +41,7 @@ export default function Home() {
           <BookCover />
         </Grid>
 
-        <hr className={classes.hr} />
+        <Divider />
 
         <Title isLink href={"/"}>
           {"huyền huyễn hot"}

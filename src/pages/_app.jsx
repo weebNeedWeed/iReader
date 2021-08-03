@@ -2,20 +2,21 @@ import React from "react";
 import Head from "next/head";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { customTheme } from "./../layouts/theme";
-import "normalize.css";
 import NextNprogress from "nextjs-progressbar";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import useWindowDimensions from "../utils/hooks/useWindowDimensions";
 import dynamic from "next/dynamic";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Footer from "../layouts/Footer/Footer.index";
 
-function MyApp({ Component, pageProps }) {
-  const { width } = useWindowDimensions();
-  const isMobile = width <= 780;
+function App({ Component, pageProps }) {
   const MobileNavBar = dynamic(() =>
     import("../layouts/MobileNavBar/MobileNavBar.index"),
   );
   const NavBar = dynamic(() => import("../layouts/NavBar/NavBar.index"));
+  const { width } = useWindowDimensions();
+  const isMobile = width <= 780;
   const navWillRender = isMobile ? <MobileNavBar /> : <NavBar />;
 
   return (
@@ -26,6 +27,7 @@ function MyApp({ Component, pageProps }) {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
+      <CssBaseline />
       <ThemeProvider theme={customTheme}>
         <NextNprogress
           color="#000"
@@ -48,10 +50,11 @@ function MyApp({ Component, pageProps }) {
         <>
           <>{navWillRender}</>
           <Component {...pageProps} />
+          <Footer />
         </>
       </ThemeProvider>
     </>
   );
 }
 
-export default MyApp;
+export default App;
