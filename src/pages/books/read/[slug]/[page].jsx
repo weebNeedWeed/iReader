@@ -4,6 +4,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import CustomEditor from "./../../../../components/CustomEditor/CustomEditor.index";
+import dbConnect from "./../../../../utils/dbConnect";
+import Chapter from "./../../../../models/Chapter";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -16,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     fontWeight: "bold",
+    textAlign: "center",
   },
   infoWrapper: {
     textAlign: "left",
@@ -25,8 +28,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Books() {
+export default function Books({ test }) {
   const classes = useStyles();
+  test = JSON.parse(test);
 
   return (
     <Container maxWidth="md" className={classes.container}>
@@ -44,68 +48,35 @@ export default function Books() {
       </Grid>
       <Container maxWidth="md" className={classes.infoWrapper}>
         <Typography variant="h4" component="h2" className={classes.title}>
-          {
-            " Lorem ipsum dolcendis ut hic vel ratione asperiores ipsa quisquam adipisci praesentium. Aliquid, ab. "
-          }
+          {test.book.title}
         </Typography>
         <Typography
           variant="h5"
           style={{ textDecoration: "underline" }}
           className={classes.info}
         >
-          {"Title chapter"}
+          {test.title}
         </Typography>
         <Typography variant="h6" className={classes.info}>
-          {"Created at: asdas"}
+          {"Created at: " + new Date(test.createdAt).toLocaleDateString()}
         </Typography>
         <Typography variant="h6" className={classes.info} gutterBottom>
-          {"Posted by: da vu thanh phien"}
+          {"Posted by: " + test.user.displayName}
         </Typography>
-        <CustomEditor
-          readOnly
-          data={{
-            blocks: [
-              {
-                key: "14465",
-                text: "Nửa đêm, Lương Hạnh dường như đã chìm vào trong giấc mơ, nhưng sau đó...",
-                type: "unstyled",
-                depth: 0,
-                inlineStyleRanges: [],
-                entityRanges: [],
-                data: {},
-              },
-              {
-                key: "8k1l7",
-                text: "\nCô mở đôi mắt nặng trĩu, nhất thời sững lại.",
-                type: "unstyled",
-                depth: 0,
-                inlineStyleRanges: [],
-                entityRanges: [],
-                data: {},
-              },
-              {
-                key: "b5qj0dasda",
-                text: "\nThì ra ngay lúc này, nười đàn ông cả tuần mới về một lần kia đang đứng bên cạnh cô, ánh đèn vàng ấm áp nơi đầu giường rọi lên người anh, soi tỏ làn da nửa thân trên cùng cánh tay thon dài, nhìn qua thật là đẹp.",
-                type: "unstyled",
-                depth: 0,
-                inlineStyleRanges: [],
-                entityRanges: [],
-                data: {},
-              },
-              {
-                key: "7fu8a",
-                text: "\nLương Hạnh sững sờ.",
-                type: "unstyled",
-                depth: 0,
-                inlineStyleRanges: [],
-                entityRanges: [],
-                data: {},
-              },
-            ],
-            entityMap: {},
-          }}
-        />
+        <CustomEditor readOnly data={JSON.parse(test.content)} />
       </Container>
     </Container>
   );
+}
+
+export async function getServerSideProps() {
+  import("./../../../../utils/dbCreateModel");
+  await dbConnect();
+  return {
+    props: {
+      test: JSON.stringify(
+        await Chapter.findOne().populate("book").populate("user"),
+      ),
+    },
+  };
 }

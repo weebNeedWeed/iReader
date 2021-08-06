@@ -1,7 +1,7 @@
 const styles = {
   editor: (props) => {
     if (props.readOnly) {
-      return { minHeight: "700px" };
+      return { minHeight: "700px", fontSize: "200%", lineHeight: "200%" };
     }
     return {
       border: "1px solid black",
@@ -10,6 +10,8 @@ const styles = {
       paddingRight: "3px",
       backgroundColor: "rgba(0, 0, 0, 0.09)",
       minHeight: "700px",
+      fontSize: "200%",
+      lineHeight: "200%",
     };
   },
   formControl: {

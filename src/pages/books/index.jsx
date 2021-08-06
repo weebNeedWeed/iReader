@@ -21,27 +21,6 @@ const useStyles = makeStyles((theme) => ({
   container: {
     marginTop: theme.custom.mainContainerMarginTop,
   },
-  form: {
-    display: "flex",
-    justifyContent: "space-between",
-    marginTop: "20px",
-  },
-  input: {
-    width: "100%",
-    padding: "5px",
-  },
-  button: {
-    marginTop: "20px",
-    backgroundColor: "rgba(0,0,0,0.6)",
-    color: "white",
-    "&:hover": {
-      backgroundColor: "rgba(0,0,0,0.8)",
-    },
-  },
-  formLabel: {
-    fontWeight: "900",
-    textDecoration: "underline",
-  },
   gutterTop: {
     marginTop: "20px",
   },
@@ -59,43 +38,6 @@ export default function Books() {
 
   return (
     <Container maxWidth="md" className={classes.container}>
-      <Title>{"Filter"}</Title>
-      <form style={{ textAlign: "center", marginTop: "10px" }}>
-        <FormLabel component="legend" className={classes.formLabel}>
-          {"Category list"}
-        </FormLabel>
-
-        {Array.from(Array(10).keys()).map((elm, index) => (
-          <FormControlLabel
-            key={index}
-            control={<Checkbox name={elm.toString()} />}
-            label={elm}
-          />
-        ))}
-
-        <Paper component="div" className={classes.form}>
-          <InputBase
-            className={classes.input}
-            placeholder={"Tu khoa"}
-            inputProps={{ "aria-label": "Tim kiem truyen" }}
-            name="keyword"
-          />
-          <IconButton className={classes.iconButton} aria-label="search">
-            <SearchIcon />
-          </IconButton>
-        </Paper>
-        <Button
-          type="submit"
-          variant="contained"
-          size="large"
-          className={classes.button}
-        >
-          {"Click to filter "}
-        </Button>
-      </form>
-
-      <Divider />
-
       <Title>{"Books"}</Title>
       <Typography variant="subtitle1">{"Tim duoc 1344 ket qua"}</Typography>
       <Grid container spacing={2} className={classes.gutterTop}>

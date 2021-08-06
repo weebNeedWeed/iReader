@@ -9,9 +9,6 @@ const styleMap = {
     color: "#395296",
     fontWeight: "bold",
   },
-  ANYCUSTOMSTYLE: {
-    color: "#00e400",
-  },
 };
 
 const toolbarItems = [
@@ -19,7 +16,6 @@ const toolbarItems = [
   { label: "Italic", style: "ITALIC" },
   { label: "Underline", style: "UNDERLINE" },
   { label: "Code", style: "CODE" },
-  { label: "Surprise", style: "ANYCUSTOMSTYLE" },
 ];
 
 export { styleMap, toolbarItems };

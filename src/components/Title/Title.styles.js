@@ -6,6 +6,7 @@ const useStyles = makeStyles({
     textDecoration: "underline overline",
     cursor: "pointer",
     textTransform: "uppercase",
+    fontSize: (props) => (props.isMobile ? "200%" : "250%"),
   },
 });
 

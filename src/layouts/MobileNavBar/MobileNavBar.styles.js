@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     height: "100% !important",
+    border: "1px solid black",
   },
   container2: ({ isOpen }) => ({
     position: "absolute",
@@ -26,12 +27,13 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
     opacity: isOpen ? 1 : 0,
     zIndex: isOpen ? 1000 : -999999,
-    transition: theme.transitions.create(),
+    transition: theme.transitions.create(["all"], { duration: "0.1s" }),
   }),
   closeButton: {
     position: "absolute",
     top: "5%",
     right: "10%",
+    border: "1px solid black",
   },
   menuWrapper: {
     position: "absolute",

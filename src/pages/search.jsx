@@ -6,17 +6,22 @@ import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
+import FormLabel from "@material-ui/core/FormLabel";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Title from "../components/Title/Title.index";
 
 const useStyles = makeStyles((theme) => ({
   container: {
     marginTop: theme.custom.mainContainerMarginTop,
-    textAlign: "center",
   },
   form: {
     display: "flex",
     justifyContent: "space-between",
     width: "80%",
     margin: "0 auto",
+    border: "1px solid rgba(0,0,0,0.5)",
+    marginTop: "15px",
   },
   input: {
     width: "100%",
@@ -30,6 +35,16 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,0.8)",
     },
   },
+  wrapper: {
+    borderBottom: "1px solid black",
+    paddingRight: "5px",
+    borderRadius: "2px",
+  },
+  formLabel: {
+    marginBottom: "10px",
+    fontWeight: "900",
+    textDecoration: "underline",
+  },
 }));
 
 function Search() {
@@ -37,7 +52,20 @@ function Search() {
 
   return (
     <Container maxWidth="md" className={classes.container}>
-      <form>
+      <Title>{"Filter"}</Title>
+      <form style={{ textAlign: "center" }}>
+        <FormLabel component="legend" className={classes.formLabel}>
+          {"Category list"}
+        </FormLabel>
+
+        {Array.from(Array(20).keys()).map((elm, index) => (
+          <FormControlLabel
+            key={index}
+            control={<Checkbox name={elm.toString()} />}
+            label={"sada odhsa"}
+            className={classes.wrapper}
+          />
+        ))}
         <Paper component="div" className={classes.form}>
           <InputBase
             className={classes.input}

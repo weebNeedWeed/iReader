@@ -12,6 +12,7 @@
         "@material-ui/core": "4.12.1",
         "@material-ui/icons": "^4.11.2",
         "@material-ui/lab": "^4.0.0-alpha.60",
+        "bcrypt": "^5.0.1",
         "draft-js": "^0.11.7",
         "ioredis": "^4.27.6",
         "khong-dau": "^2.0.0",

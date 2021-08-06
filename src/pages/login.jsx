@@ -6,8 +6,10 @@ import OutlinedInput from "@material-ui/core/OutlinedInput";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const useStyles = makeStyles({
   container: {
@@ -21,6 +23,9 @@ const useStyles = makeStyles({
   },
   formControl: {
     marginBottom: "15px",
+    "&:last-child": {
+      marginBottom: "0",
+    },
   },
   submit: {
     backgroundColor: "rgba(0,0,0,0.7)",
@@ -28,16 +33,23 @@ const useStyles = makeStyles({
     "&:hover": {
       backgroundColor: "rgba(0,0,0,0.85)",
     },
+    marginTop: "15px",
+  },
+  link: {
+    cursor: "pointer",
+    textDecoration: "underline",
   },
 });
 
-export default function Login() {
+export default function Login({ setLoading }) {
   const classes = useStyles();
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
+
     const response = await fetch("/api/auth", {
       method: "POST",
       headers: {
@@ -47,12 +59,22 @@ export default function Login() {
     });
 
     if (response.status !== 200) {
-      return toast.error("Login failed", { toastId: "loginFailed" });
+      const { message } = await response.json();
+      setTimeout(() => {
+        setLoading(false);
+        return toast.error(message, { toastId: "loginFailed" });
+      }, 2000);
+      return;
     }
 
-    toast.success("Login succeed. Redirecting...", { toastId: "loginSucceed" });
     setTimeout(() => {
-      router.push("/");
+      setLoading(false);
+      toast.success("Login succeed. Redirecting...", {
+        toastId: "loginSucceed",
+      });
+      setTimeout(() => {
+        router.push("/");
+      }, 1000);
     }, 2000);
   };
 
@@ -68,21 +90,16 @@ export default function Login() {
           fullWidth
           className={classes.formControl}
         >
-          <InputLabel htmlFor="username">{"Username"}</InputLabel>
+          <InputLabel htmlFor="username">{"Username or Email"}</InputLabel>
           <OutlinedInput
             id="username"
-            label="Username"
+            label="Username or Email"
             name="username"
             value={username}
             onChange={(event) => setUsername(event.target.value)}
           />
         </FormControl>
-        <FormControl
-          variant="outlined"
-          required
-          fullWidth
-          className={classes.formControl}
-        >
+        <FormControl variant="outlined" required fullWidth>
           <InputLabel htmlFor="password">{"Password"}</InputLabel>
           <OutlinedInput
             id="password"
@@ -93,6 +110,22 @@ export default function Login() {
             onChange={(event) => setPassword(event.target.value)}
           />
         </FormControl>
+        <Grid container justifyContent="space-between">
+          <Grid item>
+            <Link href="/register" passHref>
+              <Typography variant="button" className={classes.link}>
+                {"Register"}
+              </Typography>
+            </Link>
+          </Grid>
+          <Grid item>
+            <Link href="/forgotpassword" passHref>
+              <Typography variant="button" className={classes.link}>
+                {"forgot password"}
+              </Typography>
+            </Link>
+          </Grid>
+        </Grid>
         <Button
           variant="contained"
           type="submit"

@@ -5,8 +5,8 @@ import useStyles from "./Title.styles";
 import PropTypes from "prop-types";
 import Link from "next/link";
 
-function TitlePresentation({ children, isLink, href }) {
-  const classes = useStyles();
+function TitlePresentation({ children, isLink, href, isMobile }) {
+  const classes = useStyles({ isMobile });
 
   if (isLink) {
     return (
@@ -29,6 +29,7 @@ TitlePresentation.propTypes = {
   children: PropTypes.string,
   isLink: PropTypes.bool,
   href: PropTypes.string,
+  isMobile: PropTypes.bool,
 };
 
 export default TitlePresentation;

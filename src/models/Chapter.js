@@ -20,7 +20,15 @@ const ChapterSchema = new mongoose.Schema({
     required: true,
     ref: "Book",
   },
-  user: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "User",
+  },
+  content: {
+    type: String,
+    required: true,
+  },
 });
 
 export default mongoose.models.Chapter ||
