@@ -41,11 +41,98 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Register() {
+export default function Register({ setLoading }) {
   const classes = useStyles();
   const router = useRouter();
+  const [state, setState] = useState({
+    username: "",
+    password: "",
+    displayName: "",
+    email: "",
+    repeatPassword: "",
+  });
 
-  const handleSubmit = async (event) => {};
+  const { username, password, displayName, email, repeatPassword } = state;
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const { username, password, displayName, email, repeatPassword } = state;
+
+    if (!username || !password || !email || !repeatPassword) {
+      return toast.error("nhap thieu", { toastId: "missing" });
+    }
+
+    const mailCheckRegex =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!email.match(mailCheckRegex)) {
+      return toast.error("mail khong chuan form", {
+        toastId: "mailNotMatch",
+      });
+    }
+
+    if (displayName.length < 5 || displayName.length > 50) {
+      return toast.error(
+        "display name phai dai hon 4 ky tu va be hon 50 ky tu",
+        { toastId: "displayNameLength" },
+      );
+    }
+
+    if (username.length < 5 || username.length > 50) {
+      return toast.error("username phai dai hon 4 ky tu va be hon 50 ky tu", {
+        toastId: "usernameLength",
+      });
+    }
+
+    if (repeatPassword !== password) {
+      return toast.error("password phai bang repeat password", {
+        toastId: "notEqualPass",
+      });
+    }
+
+    const passwordCheckRegex = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}/;
+    if (!password.match(passwordCheckRegex)) {
+      return toast.error(
+        "password phai dai hon 8 ky tu, co it nhat 1 chu in hoa, so, chu in thuong",
+        { toastId: "passwordError" },
+      );
+    }
+
+    setLoading(true);
+    const response = await fetch("/api/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(state),
+    });
+
+    if (response.status !== 200) {
+      const { message } = await response.json();
+      setTimeout(() => {
+        setLoading(false);
+        return toast.error(message, { toastId: "registerFailed" });
+      }, 2000);
+      return;
+    }
+
+    setTimeout(() => {
+      setLoading(false);
+      toast.success("Register succeed. Redirecting...", {
+        toastId: "registerSucceed",
+      });
+      setTimeout(() => {
+        router.push("/");
+      }, 1000);
+    }, 2000);
+  };
+
+  const handleChangeInput = (event) => {
+    const { name, value } = event.target;
+    setState({
+      ...state,
+      [name]: value,
+    });
+  };
 
   return (
     <Container maxWidth="xs" className={classes.container}>
@@ -53,15 +140,6 @@ export default function Register() {
         <Typography variant="h3" gutterBottom>
           {"Register"}
         </Typography>
-        <FormControl
-          variant="outlined"
-          required
-          fullWidth
-          className={classes.formControl}
-        >
-          <InputLabel htmlFor="username">{"Username"}</InputLabel>
-          <OutlinedInput id="username" label="Username" name="username" />
-        </FormControl>
 
         <FormControl
           variant="outlined"
@@ -70,7 +148,46 @@ export default function Register() {
           className={classes.formControl}
         >
           <InputLabel htmlFor="email">{"Email"}</InputLabel>
-          <OutlinedInput id="email" label="Email" name="email" type="email" />
+          <OutlinedInput
+            id="email"
+            label="Email"
+            name="email"
+            type="email"
+            value={email}
+            onChange={handleChangeInput}
+          />
+        </FormControl>
+
+        <FormControl
+          variant="outlined"
+          required
+          fullWidth
+          className={classes.formControl}
+        >
+          <InputLabel htmlFor="displayName">{"Display name"}</InputLabel>
+          <OutlinedInput
+            id="displayName"
+            label="DisplayName"
+            name="displayName"
+            value={displayName}
+            onChange={handleChangeInput}
+          />
+        </FormControl>
+
+        <FormControl
+          variant="outlined"
+          required
+          fullWidth
+          className={classes.formControl}
+        >
+          <InputLabel htmlFor="username">{"Username"}</InputLabel>
+          <OutlinedInput
+            id="username"
+            label="Username"
+            name="username"
+            value={username}
+            onChange={handleChangeInput}
+          />
         </FormControl>
 
         <FormControl
@@ -85,6 +202,8 @@ export default function Register() {
             label="Password"
             name="password"
             type="password"
+            value={password}
+            onChange={handleChangeInput}
           />
         </FormControl>
 
@@ -95,6 +214,8 @@ export default function Register() {
             label="Repeat password"
             name="repeatPassword"
             type="password"
+            value={repeatPassword}
+            onChange={handleChangeInput}
           />
         </FormControl>
 

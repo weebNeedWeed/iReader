@@ -49,6 +49,7 @@ export default function Login({ setLoading }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
+
     const response = await fetch("/api/auth", {
       method: "POST",
       headers: {
@@ -58,12 +59,14 @@ export default function Login({ setLoading }) {
     });
 
     if (response.status !== 200) {
+      const { message } = await response.json();
       setTimeout(() => {
         setLoading(false);
-        return toast.error("Login failed", { toastId: "loginFailed" });
+        return toast.error(message, { toastId: "loginFailed" });
       }, 2000);
       return;
     }
+
     setTimeout(() => {
       setLoading(false);
       toast.success("Login succeed. Redirecting...", {
@@ -87,10 +90,10 @@ export default function Login({ setLoading }) {
           fullWidth
           className={classes.formControl}
         >
-          <InputLabel htmlFor="username">{"Username"}</InputLabel>
+          <InputLabel htmlFor="username">{"Username or Email"}</InputLabel>
           <OutlinedInput
             id="username"
-            label="Username"
+            label="Username or Email"
             name="username"
             value={username}
             onChange={(event) => setUsername(event.target.value)}
