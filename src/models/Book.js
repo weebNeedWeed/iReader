@@ -26,8 +26,14 @@ const BookSchema = new mongoose.Schema({
   chapters: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      require: true,
       ref: "Chapter",
+    },
+  ],
+  category: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
     },
   ],
 });

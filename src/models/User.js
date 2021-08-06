@@ -9,6 +9,14 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  displayName: {
+    type: String,
+    required: true,
+  },
+  hasAdminPermission: {
+    type: Boolean,
+    required: true,
+  },
   chapter: [
     {
       type: mongoose.Schema.Types.ObjectId,

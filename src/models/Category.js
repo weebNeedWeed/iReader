@@ -10,11 +10,12 @@ const CategorySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  book: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "Book",
-  },
+  book: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Book",
+    },
+  ],
 });
 
 export default mongoose.models.Category ||

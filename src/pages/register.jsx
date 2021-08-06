@@ -41,45 +41,17 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Login({ setLoading }) {
+export default function Register() {
   const classes = useStyles();
   const router = useRouter();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setLoading(true);
-    const response = await fetch("/api/auth", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    });
 
-    if (response.status !== 200) {
-      setTimeout(() => {
-        setLoading(false);
-        return toast.error("Login failed", { toastId: "loginFailed" });
-      }, 2000);
-      return;
-    }
-    setTimeout(() => {
-      setLoading(false);
-      toast.success("Login succeed. Redirecting...", {
-        toastId: "loginSucceed",
-      });
-      setTimeout(() => {
-        router.push("/");
-      }, 1000);
-    }, 2000);
-  };
+  const handleSubmit = async (event) => {};
 
   return (
     <Container maxWidth="xs" className={classes.container}>
       <form onSubmit={handleSubmit} className={classes.form}>
         <Typography variant="h3" gutterBottom>
-          {"Login"}
+          {"Register"}
         </Typography>
         <FormControl
           variant="outlined"
@@ -88,37 +60,56 @@ export default function Login({ setLoading }) {
           className={classes.formControl}
         >
           <InputLabel htmlFor="username">{"Username"}</InputLabel>
-          <OutlinedInput
-            id="username"
-            label="Username"
-            name="username"
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-          />
+          <OutlinedInput id="username" label="Username" name="username" />
         </FormControl>
-        <FormControl variant="outlined" required fullWidth>
+
+        <FormControl
+          variant="outlined"
+          required
+          fullWidth
+          className={classes.formControl}
+        >
+          <InputLabel htmlFor="email">{"Email"}</InputLabel>
+          <OutlinedInput id="email" label="Email" name="email" type="email" />
+        </FormControl>
+
+        <FormControl
+          variant="outlined"
+          required
+          fullWidth
+          className={classes.formControl}
+        >
           <InputLabel htmlFor="password">{"Password"}</InputLabel>
           <OutlinedInput
             id="password"
             label="Password"
             name="password"
             type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
           />
         </FormControl>
+
+        <FormControl variant="outlined" required fullWidth>
+          <InputLabel htmlFor="repeatPassword">{"Repeat password"}</InputLabel>
+          <OutlinedInput
+            id="repeatPassword"
+            label="Repeat password"
+            name="repeatPassword"
+            type="password"
+          />
+        </FormControl>
+
         <Grid container justifyContent="space-between">
           <Grid item>
-            <Link href="/register" passHref>
+            <Link href="/login" passHref>
               <Typography variant="button" className={classes.link}>
-                {"Register"}
+                {"Login"}
               </Typography>
             </Link>
           </Grid>
           <Grid item>
             <Link href="/forgotpassword" passHref>
               <Typography variant="button" className={classes.link}>
-                {"forgot password"}
+                {"Forgot password"}
               </Typography>
             </Link>
           </Grid>
@@ -129,7 +120,7 @@ export default function Login({ setLoading }) {
           fullWidth
           className={classes.submit}
         >
-          {"Login"}
+          {"Register"}
         </Button>
       </form>
     </Container>

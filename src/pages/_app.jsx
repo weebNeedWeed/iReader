@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Head from "next/head";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { customTheme } from "./../layouts/theme";
@@ -9,8 +9,10 @@ import useWindowDimensions from "../utils/hooks/useWindowDimensions";
 import dynamic from "next/dynamic";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Footer from "../layouts/Footer/Footer.index";
+import Loading from "../layouts/Loading/Loading.index";
 
 function App({ Component, pageProps }) {
+  const [loading, setLoading] = useState(false);
   const MobileNavBar = dynamic(() =>
     import("../layouts/MobileNavBar/MobileNavBar.index"),
   );
@@ -47,11 +49,14 @@ function App({ Component, pageProps }) {
           draggable
           pauseOnHover
         />
-        <>
-          <>{navWillRender}</>
-          <Component {...pageProps} />
-          <Footer />
-        </>
+        <Loading loading={loading} />
+        {loading ? null : (
+          <>
+            <>{navWillRender}</>
+            <Component {...pageProps} setLoading={setLoading} />
+            <Footer />
+          </>
+        )}
       </ThemeProvider>
     </>
   );
