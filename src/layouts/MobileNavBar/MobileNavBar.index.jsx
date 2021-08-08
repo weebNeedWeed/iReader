@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import MobileNavBarPresentation from "./MobileNavBar.presentation";
-import routes from "./../../utils/routes";
+import ROUTES from "./../../utils/routes";
+import { useRouter } from "next/router";
 
-function MobileNavBar() {
+function MobileNavBar({ loggedIn }) {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const handleClick = () => setIsOpen((prevState) => !prevState);
 
   return (
     <MobileNavBarPresentation
       isOpen={isOpen}
-      routes={routes}
+      routes={ROUTES}
       handleClick={handleClick}
+      loggedIn={loggedIn}
+      currentPathname={router.pathname}
     />
   );
 }

@@ -1,8 +1,8 @@
-import dbConnect from "../../utils/dbConnect";
-import User from "./../../models/User";
+import dbConnect from "../../../utils/dbConnect";
+import User from "./../../../models/User";
 import md5 from "md5";
 import bcrypt from "bcrypt";
-import withSession from "./../../utils/withSession";
+import withSession from "./../../../utils/withSession";
 
 export default withSession(async (req, res) => {
   await dbConnect();
@@ -33,7 +33,7 @@ export default withSession(async (req, res) => {
     return res.status(500).json({ message: "Login failed" });
   }
 
-  req.session.set("authKey", `${user._id}${user.password}_${user.username}`);
+  req.session.set("authKey", `${user._id}${user.password}_${user.salt}`);
   await req.session.save();
   return res.status(200).json({ message: "success" });
 });

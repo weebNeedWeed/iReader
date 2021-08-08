@@ -73,7 +73,7 @@ export default function Login({ setLoading }) {
         toastId: "loginSucceed",
       });
       setTimeout(() => {
-        router.push("/");
+        window.location = "/";
       }, 1000);
     }, 2000);
   };

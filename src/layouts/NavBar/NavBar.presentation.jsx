@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
 
 function NavBarPresentation(props) {
-  const { routes } = props;
+  const { routes, loggedIn, currentPathname } = props;
   const classes = useStyles();
 
   return (
@@ -21,15 +21,39 @@ function NavBarPresentation(props) {
           </Grid>
           <Grid item>
             <Grid container className={classes.buttonWrapper}>
-              {routes.map((elm, index) => (
-                <Grid item key={index} className={classes.linkItem}>
-                  <Link href={elm.pathName} passHref>
-                    <Button variant="outlined" className={classes.button}>
-                      {elm.displayName}
-                    </Button>
-                  </Link>
-                </Grid>
-              ))}
+              {routes.map((elm, index) => {
+                if (elm.navDisplay) {
+                  if (loggedIn && elm.navDisplay.whenLogin) {
+                    return (
+                      <Grid item key={index} className={classes.linkItem}>
+                        <Link href={elm.pathName} passHref>
+                          <Button
+                            variant="outlined"
+                            className={classes.button}
+                            disabled={currentPathname === elm.pathName}
+                          >
+                            {elm.displayName}
+                          </Button>
+                        </Link>
+                      </Grid>
+                    );
+                  } else if (!loggedIn && elm.navDisplay.whenLogout) {
+                    return (
+                      <Grid item key={index} className={classes.linkItem}>
+                        <Link href={elm.pathName} passHref>
+                          <Button
+                            variant="outlined"
+                            className={classes.button}
+                            disabled={currentPathname === elm.pathName}
+                          >
+                            {elm.displayName}
+                          </Button>
+                        </Link>
+                      </Grid>
+                    );
+                  }
+                }
+              })}
             </Grid>
           </Grid>
         </Grid>

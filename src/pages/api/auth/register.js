@@ -1,8 +1,8 @@
-import dbConnect from "../../utils/dbConnect";
-import User from "./../../models/User";
+import dbConnect from "../../../utils/dbConnect";
+import User from "./../../../models/User";
 import md5 from "md5";
 import bcrypt from "bcrypt";
-import withSession from "./../../utils/withSession";
+import withSession from "./../../../utils/withSession";
 
 export default withSession(async (req, res) => {
   await dbConnect();

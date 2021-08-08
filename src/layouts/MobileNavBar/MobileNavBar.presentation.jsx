@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 import CloseIcon from "@material-ui/icons/Close";
 
 function MobileNavBarPresentation(props) {
-  const { isOpen, handleClick, routes } = props;
+  const { isOpen, handleClick, routes, loggedIn, currentPathname } = props;
   const classes = useStyles({ isOpen });
 
   return (
@@ -47,18 +47,40 @@ function MobileNavBarPresentation(props) {
           <CloseIcon />
         </Button>
         <Container maxWidth="xs" className={classes.menuWrapper}>
-          {routes.map((elm, index) => (
-            <Link passHref href={elm.pathName} key={index}>
-              <Button
-                variant="outlined"
-                size="large"
-                fullWidth
-                className={classes.menuButton}
-              >
-                {elm.displayName}
-              </Button>
-            </Link>
-          ))}
+          {routes.map((elm, index) => {
+            if (elm.navDisplay) {
+              if (loggedIn && elm.navDisplay.whenLogin) {
+                return (
+                  <Link passHref href={elm.pathName} key={index}>
+                    <Button
+                      variant="outlined"
+                      size="large"
+                      fullWidth
+                      className={classes.menuButton}
+                      disabled={currentPathname === elm.pathName}
+                    >
+                      {elm.displayName}
+                    </Button>
+                  </Link>
+                );
+              }
+              if (!loggedIn && elm.navDisplay.whenLogout) {
+                return (
+                  <Link passHref href={elm.pathName} key={index}>
+                    <Button
+                      variant="outlined"
+                      size="large"
+                      fullWidth
+                      className={classes.menuButton}
+                      disabled={currentPathname === elm.pathName}
+                    >
+                      {elm.displayName}
+                    </Button>
+                  </Link>
+                );
+              }
+            }
+          })}
         </Container>
       </Container>
     </>

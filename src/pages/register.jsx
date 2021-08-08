@@ -98,7 +98,7 @@ export default function Register({ setLoading }) {
     }
 
     setLoading(true);
-    const response = await fetch("/api/register", {
+    const response = await fetch("/api/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -117,11 +117,11 @@ export default function Register({ setLoading }) {
 
     setTimeout(() => {
       setLoading(false);
-      toast.success("Register succeed. Redirecting...", {
+      toast.success("Register succeed. Please login to your new account!", {
         toastId: "registerSucceed",
       });
       setTimeout(() => {
-        router.push("/");
+        router.push("/login");
       }, 1000);
     }, 2000);
   };
