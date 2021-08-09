@@ -8,7 +8,6 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import { toast } from "react-toastify";
-import { useRouter } from "next/router";
 import Link from "next/link";
 
 const useStyles = makeStyles({
@@ -43,14 +42,13 @@ const useStyles = makeStyles({
 
 export default function Login({ setLoading }) {
   const classes = useStyles();
-  const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
 
-    const response = await fetch("/api/auth", {
+    const response = await fetch("/api/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -73,7 +71,7 @@ export default function Login({ setLoading }) {
         toastId: "loginSucceed",
       });
       setTimeout(() => {
-        window.location = "/";
+        window.location = "/user";
       }, 1000);
     }, 2000);
   };
@@ -112,14 +110,14 @@ export default function Login({ setLoading }) {
         </FormControl>
         <Grid container justifyContent="space-between">
           <Grid item>
-            <Link href="/register" passHref>
+            <Link href="/user/register" passHref>
               <Typography variant="button" className={classes.link}>
                 {"Register"}
               </Typography>
             </Link>
           </Grid>
           <Grid item>
-            <Link href="/forgotpassword" passHref>
+            <Link href="/user/forgotpassword" passHref>
               <Typography variant="button" className={classes.link}>
                 {"forgot password"}
               </Typography>

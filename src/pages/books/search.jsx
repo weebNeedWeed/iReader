@@ -9,7 +9,7 @@ import Button from "@material-ui/core/Button";
 import FormLabel from "@material-ui/core/FormLabel";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import Title from "../components/Title/Title.index";
+import Title from "./../../components/Title/Title.index";
 
 const useStyles = makeStyles((theme) => ({
   container: {

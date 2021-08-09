@@ -121,7 +121,7 @@ export default function Register({ setLoading }) {
         toastId: "registerSucceed",
       });
       setTimeout(() => {
-        router.push("/login");
+        router.push("/user/login");
       }, 1000);
     }, 2000);
   };
@@ -221,14 +221,14 @@ export default function Register({ setLoading }) {
 
         <Grid container justifyContent="space-between">
           <Grid item>
-            <Link href="/login" passHref>
+            <Link href="/user/login" passHref>
               <Typography variant="button" className={classes.link}>
                 {"Login"}
               </Typography>
             </Link>
           </Grid>
           <Grid item>
-            <Link href="/forgotpassword" passHref>
+            <Link href="/user/forgotpassword" passHref>
               <Typography variant="button" className={classes.link}>
                 {"Forgot password"}
               </Typography>
