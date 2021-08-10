@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { useRouter } from "next/router";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   container: {
     marginTop: "30vh",
     textAlign: "center",
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "15px",
     width: "80%",
   },
-}));
+});
 
 export default function Logout({ setLoading }) {
   const classes = useStyles();

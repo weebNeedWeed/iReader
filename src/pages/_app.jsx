@@ -14,8 +14,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import ROUTES from "./../utils/routes";
 import { useRouter } from "next/router";
 import App from "next/app";
-// import MobileNavBar from "../layouts/MobileNavBar/MobileNavBar.index";
-// import NavBar from "../layouts/NavBar/NavBar.index";
 
 const useStyles = makeStyles({
   toast: {
