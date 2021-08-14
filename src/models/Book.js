@@ -29,13 +29,11 @@ const BookSchema = new mongoose.Schema({
       ref: "Chapter",
     },
   ],
-  category: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
-      required: true,
-    },
-  ],
+  tag: {
+    type: String,
+    required: true,
+    default: "",
+  },
 });
 
 export default mongoose.models.Book || mongoose.model("Book", BookSchema);

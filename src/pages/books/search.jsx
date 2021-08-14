@@ -52,20 +52,7 @@ function Search() {
 
   return (
     <Container maxWidth="md" className={classes.container}>
-      <Title>{"Filter"}</Title>
       <form style={{ textAlign: "center" }}>
-        <FormLabel component="legend" className={classes.formLabel}>
-          {"Category list"}
-        </FormLabel>
-
-        {Array.from(Array(20).keys()).map((elm, index) => (
-          <FormControlLabel
-            key={index}
-            control={<Checkbox name={elm.toString()} />}
-            label={"sada odhsa"}
-            className={classes.wrapper}
-          />
-        ))}
         <Paper component="div" className={classes.form}>
           <InputBase
             className={classes.input}
