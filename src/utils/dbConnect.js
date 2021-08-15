@@ -1,8 +1,4 @@
 import mongoose from "mongoose";
-import Book from "./../models/Book";
-import Chapter from "./../models/Chapter";
-import User from "./../models/User";
-import Category from "./../models/Category";
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
@@ -39,12 +35,6 @@ async function dbConnect() {
     });
   }
   cached.conn = await cached.promise;
-
-  // create models
-  Book;
-  Chapter;
-  Category;
-  User;
 
   return cached.conn;
 }

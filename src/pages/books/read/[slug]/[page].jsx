@@ -4,8 +4,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import CustomEditor from "./../../../../components/CustomEditor/CustomEditor.index";
-import dbConnect from "./../../../../utils/dbConnect";
-import Chapter from "./../../../../models/Chapter";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -28,9 +26,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Books({ test }) {
+export default function Books() {
   const classes = useStyles();
-  test = JSON.parse(test);
 
   return (
     <Container maxWidth="md" className={classes.container}>
@@ -48,35 +45,45 @@ export default function Books({ test }) {
       </Grid>
       <Container maxWidth="md" className={classes.infoWrapper}>
         <Typography variant="h4" component="h2" className={classes.title}>
-          {test.book.title}
+          {"test.book.title"}
         </Typography>
         <Typography
           variant="h5"
           style={{ textDecoration: "underline" }}
           className={classes.info}
         >
-          {test.title}
+          {"test.title"}
         </Typography>
         <Typography variant="h6" className={classes.info}>
-          {"Created at: " + new Date(test.createdAt).toLocaleDateString()}
+          {"Created at: "}
         </Typography>
         <Typography variant="h6" className={classes.info} gutterBottom>
-          {"Posted by: " + test.user.displayName}
+          {"Posted by: " + "test.user.displayName"}
         </Typography>
-        <CustomEditor readOnly data={JSON.parse(test.content)} />
+        <CustomEditor
+          readOnly
+          data={{
+            blocks: [
+              {
+                key: "ce3ng",
+                text: "",
+                type: "unstyled",
+                depth: 0,
+                inlineStyleRanges: [],
+                entityRanges: [],
+                data: {},
+              },
+            ],
+            entityMap: {},
+          }}
+        />
       </Container>
     </Container>
   );
 }
 
 export async function getServerSideProps() {
-  import("./../../../../utils/dbCreateModel");
-  await dbConnect();
   return {
-    props: {
-      test: JSON.stringify(
-        await Chapter.findOne().populate("book").populate("user"),
-      ),
-    },
+    props: {},
   };
 }
