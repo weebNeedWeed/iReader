@@ -9,6 +9,8 @@ import dbConnect from "./../../../utils/dbConnect";
 import User from "./../../../models/User";
 import Book from "./../../../models/Book";
 import BookManager from "../../../components/Admin/BookManager/BookManager.index";
+import ChapterManager from "../../../components/Admin/ChapterManager/ChapterManager.index";
+import withSession from "../../../utils/withSession";
 
 const adminRoutes = [
   {
@@ -18,6 +20,10 @@ const adminRoutes = [
   {
     name: "Book",
     display: (props) => <BookManager {...props} />,
+  },
+  {
+    name: "Chapter",
+    display: (props) => <ChapterManager {...props} />,
   },
 ];
 
@@ -127,8 +133,44 @@ export default function Index({ passToChild }) {
   );
 }
 
-export async function getServerSideProps() {
+export const getServerSideProps = withSession(async function ({ req, res }) {
   await dbConnect();
+
+  if (req.session.get("authKey")) {
+    const authKey = req.session.get("authKey");
+    const id = authKey.slice(0, 24);
+    const _pos = authKey.indexOf("_");
+    const hashPassword = authKey.slice(24, _pos);
+    const salt = authKey.slice(_pos + 1);
+
+    const user = await User.findOne({
+      $and: [{ _id: id }, { password: hashPassword }, { salt }],
+    });
+
+    if (!user) {
+      return {
+        redirect: {
+          destination: "/user/login",
+          permanent: false,
+        },
+      };
+    }
+
+    if (!user.admin) {
+      return {
+        redirect: {
+          destination: "/user/login",
+          permanent: false,
+        },
+      };
+    }
+  } else
+    return {
+      redirect: {
+        destination: "/user/login",
+        permanent: false,
+      },
+    };
 
   const listAdminUsers = JSON.stringify(await User.find({ admin: true }));
   const listBooks = JSON.stringify(await Book.find());
@@ -141,4 +183,4 @@ export async function getServerSideProps() {
       },
     },
   };
-}
+});

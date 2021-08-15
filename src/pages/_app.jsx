@@ -85,6 +85,7 @@ export default function MyApp({ Component, pageProps, customProps }) {
               {...pageProps}
               setDisplayLayout={setDisplayLayout}
               setLoading={setLoading}
+              loggedIn={loggedIn}
             />
             <Footer />
           </>
@@ -93,6 +94,7 @@ export default function MyApp({ Component, pageProps, customProps }) {
             {...pageProps}
             setDisplayLayout={setDisplayLayout}
             setLoading={setLoading}
+            loggedIn={loggedIn}
           />
         )}
       </ThemeProvider>

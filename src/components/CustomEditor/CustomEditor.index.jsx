@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import PropTypes from "prop-types";
 
 function CustomEditor(props) {
-  const handleSubmit = async (title, slug, description, content) => {
+  const handleSubmit = async (title, slug, book, content) => {
     if (!title.trim()) {
       return toast.error("Missing data", {
         toastId: "errorMissingData",
@@ -20,7 +20,7 @@ function CustomEditor(props) {
       });
     }
 
-    const response = await fetch("/api/posts", {
+    const response = await fetch("/api/chapter", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -28,9 +28,8 @@ function CustomEditor(props) {
       body: JSON.stringify({
         title,
         slug,
-        description,
         content: JSON.stringify(content),
-        authKey: props.authKey,
+        book,
       }),
     });
 

@@ -12,12 +12,12 @@ import Typography from "@material-ui/core/Typography";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import FilledInput from "@material-ui/core/FilledInput";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
 import KhongDau from "khong-dau";
 import { styleMap, toolbarItems } from "./../../utils/editorConfigure";
-import { writeStyles, readStyles } from "./CustomEditor.styles";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const initialData = {
   blocks: [],
@@ -30,8 +30,8 @@ class CustomEditorPresentation extends Component {
     this.state = {
       editorState: EditorState.createWithContent(convertFromRaw(initialData)),
       title: "",
+      book: "",
       slug: "",
-      description: "",
       editSlug: false,
     };
 
@@ -82,7 +82,7 @@ class CustomEditorPresentation extends Component {
   };
 
   render() {
-    const { title, slug, description, editorState } = this.state;
+    const { title, slug, editorState, book } = this.state;
     const { classes, readOnly, data } = this.props;
     // Make sure we're not on the ssr
     if (typeof window !== "undefined") {
@@ -105,7 +105,7 @@ class CustomEditorPresentation extends Component {
           this.props.handleSubmit(
             title,
             slug,
-            description,
+            book,
             convertToRaw(editorState.getCurrentContent()),
           );
         }}
@@ -136,6 +136,23 @@ class CustomEditorPresentation extends Component {
               />
             </FormControl>
 
+            <FormControl style={{ width: "100%" }}>
+              <InputLabel id="demo">Book</InputLabel>
+              <Select
+                labelId="demo"
+                id="demo"
+                value={this.state.book}
+                onChange={this.handleChangeInput}
+                name="book"
+              >
+                {this.props.listBooks.map((elm, index) => (
+                  <MenuItem value={elm._id} key={index}>
+                    {elm.title}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
             <Typography variant="h5">{"Slug:"}</Typography>
             <FormControl
               variant="filled"
@@ -150,17 +167,6 @@ class CustomEditorPresentation extends Component {
                 name="slug"
               />
             </FormControl>
-
-            <Typography variant="h5">{"Description:"}</Typography>
-            <TextareaAutosize
-              aria-label="Description"
-              minRows={5}
-              placeholder="Description"
-              className={classes.textArea}
-              value={this.state.description}
-              name="description"
-              onChange={this.handleChangeInput}
-            />
 
             <Typography variant="h5">{"Content:"}</Typography>
             <div style={toolbarStyle}>
