@@ -41,7 +41,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Register({ setLoading }) {
+export default function Register({ setLoading, loggedIn }) {
   const classes = useStyles();
   const router = useRouter();
   const [state, setState] = useState({
@@ -51,6 +51,8 @@ export default function Register({ setLoading }) {
     email: "",
     repeatPassword: "",
   });
+
+  if (loggedIn && process.browser) router.push("/user");
 
   const { username, password, displayName, email, repeatPassword } = state;
 

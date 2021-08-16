@@ -9,6 +9,7 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import { toast } from "react-toastify";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const useStyles = makeStyles({
   container: {
@@ -40,10 +41,14 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Login({ setLoading }) {
+export default function Login({ setLoading, loggedIn }) {
   const classes = useStyles();
+  const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  if (loggedIn && process.browser) router.push("/user");
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);

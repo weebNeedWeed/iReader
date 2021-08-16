@@ -33,7 +33,7 @@ function BookManagerPresentation({
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    slug: uuidv4(),
+    slug: uuidv4().slice(0, 8),
     imageUrl: "",
     tag: "",
     _id: "",
@@ -56,7 +56,7 @@ function BookManagerPresentation({
     setFormData({
       title: "",
       description: "",
-      slug: uuidv4(),
+      slug: uuidv4().slice(0, 8),
       imageUrl: "",
       tag: "",
       _id: "",

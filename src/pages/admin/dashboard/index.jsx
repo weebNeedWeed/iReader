@@ -159,7 +159,7 @@ export const getServerSideProps = withSession(async function ({ req, res }) {
     if (!user.admin) {
       return {
         redirect: {
-          destination: "/user/login",
+          destination: "/",
           permanent: false,
         },
       };

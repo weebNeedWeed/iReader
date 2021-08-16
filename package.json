@@ -14,7 +14,6 @@
         "@material-ui/lab": "^4.0.0-alpha.60",
         "bcrypt": "^5.0.1",
         "draft-js": "^0.11.7",
-        "ioredis": "^4.27.6",
         "khong-dau": "^2.0.0",
         "md5": "^2.3.0",
         "mongoose": "^5.13.3",

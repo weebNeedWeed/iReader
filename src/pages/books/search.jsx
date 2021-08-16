@@ -6,14 +6,16 @@ import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
-import FormLabel from "@material-ui/core/FormLabel";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Title from "./../../components/Title/Title.index";
+import dbConnect from "./../../utils/dbConnect";
+import Book from "./../../models/Book";
+import Grid from "@material-ui/core/Grid";
+import BookCover from "../../components/BookCover/BookCover.index";
+import Title from "../../components/Title/Title.index";
 
 const useStyles = makeStyles((theme) => ({
   container: {
     marginTop: theme.custom.mainContainerMarginTop,
+    minHeight: "100vh",
   },
   form: {
     display: "flex",
@@ -47,8 +49,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Search() {
+export default function Search({ books }) {
   const classes = useStyles();
+  const display = books ? JSON.parse(books) : [];
 
   return (
     <Container maxWidth="md" className={classes.container}>
@@ -78,8 +81,30 @@ function Search() {
           {"tìm "} <SearchIcon />
         </Button>
       </form>
+      {books ? <Title>{"Results"}</Title> : null}
+      <Grid container spacing={2}>
+        {display.map((elm, index) => (
+          <BookCover key={index} book data={elm} />
+        ))}
+      </Grid>
     </Container>
   );
 }
 
-export default Search;
+export async function getServerSideProps(context) {
+  await dbConnect();
+  const { keyword } = context.query;
+
+  if (!keyword || keyword === "") {
+    return {
+      props: {
+        error: true,
+      },
+    };
+  }
+  return {
+    props: {
+      books: JSON.stringify(await Book.find({ tag: { $regex: keyword } })),
+    },
+  };
+}

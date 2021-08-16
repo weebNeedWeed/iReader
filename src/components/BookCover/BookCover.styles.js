@@ -7,8 +7,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "auto",
     backgroundRepeat: "no-repeat",
     backgroundSize: "contain",
-    backgroundImage:
-      "url('https://tamlinh247.com/uploads/images/wp-content/uploads/26-4.jpg')",
+    backgroundImage: (props) => `url('${props.image}')`,
     cursor: "pointer",
     position: "relative",
     transition: theme.transitions.create() + " !important",

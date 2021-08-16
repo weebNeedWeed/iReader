@@ -3,7 +3,7 @@ import React from "react";
 import HomeIcon from "@material-ui/icons/Home";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
-const ROUTES = [
+let ROUTES = [
   {
     displayName: "login",
     pathName: "/user/login",
@@ -40,6 +40,15 @@ const ROUTES = [
       whenLogout: false,
     },
   },
+  {
+    displayName: "books",
+    pathName: "/books",
+    withLayout: true,
+    navDisplay: {
+      whenLogin: true,
+      whenLogout: true,
+    },
+  },
 ];
 
 const notDisplayNavRoute = [
@@ -49,8 +58,20 @@ const notDisplayNavRoute = [
     withLayout: true,
     navDisplay: false,
   },
+  {
+    displayName: "booksinfo",
+    pathName: "/books/info/[slug]",
+    withLayout: true,
+    navDisplay: false,
+  },
+  {
+    displayName: "booksread",
+    pathName: "/books/read/[slug]/[page]",
+    withLayout: true,
+    navDisplay: false,
+  },
 ];
 
-ROUTES.concat(notDisplayNavRoute);
+ROUTES = ROUTES.concat(notDisplayNavRoute);
 
 export default ROUTES;

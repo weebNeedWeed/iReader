@@ -1,5 +1,6 @@
 import dbConnect from "../../../utils/dbConnect";
 import User from "./../../../models/User";
+import Book from "./../../../models/Book";
 import Chapter from "./../../../models/Chapter";
 import withSession from "./../../../utils/withSession";
 import mongoose from "mongoose";
@@ -36,8 +37,12 @@ export default withSession(async (req, res) => {
         user: new mongoose.Types.ObjectId(id),
       });
 
+      const sBook = await Book.findOne({ _id: bookId });
+      sBook.chapters.push(newChapter);
+
       try {
         await newChapter.save();
+        await sBook.save();
       } catch (error) {
         return res.status(401).json({ message: "error" });
       }

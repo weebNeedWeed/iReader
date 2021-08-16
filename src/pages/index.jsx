@@ -6,6 +6,8 @@ import Grid from "@material-ui/core/Grid";
 import BookCover from "../components/BookCover/BookCover.index";
 import Title from "../components/Title/Title.index";
 import Divider from "./../components/Divider/Divider.index";
+import dbConnect from "./../utils/dbConnect";
+import Book from "./../models/Book";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -16,8 +18,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Home() {
+export default function Home({ books }) {
   const classes = useStyles();
+  const display = JSON.parse(books);
 
   return (
     <>
@@ -29,30 +32,23 @@ export default function Home() {
           {"mới nhất"}
         </Title>
         <Grid container spacing={2} className={classes.gutterTop}>
-          <BookCover />
+          {display.map((elm, index) => (
+            <BookCover key={index} data={elm} />
+          ))}
         </Grid>
 
         <Divider />
-
-        <Title isLink href={"/"}>
-          {"tiên hiệp hot"}
-        </Title>
-        <Grid container spacing={2} className={classes.gutterTop}>
-          <BookCover />
-        </Grid>
-
-        <Divider />
-
-        <Title isLink href={"/"}>
-          {"huyền huyễn hot"}
-        </Title>
-        <Grid container spacing={2} className={classes.gutterTop}>
-          <BookCover />
-          <BookCover />
-          <BookCover />
-          <BookCover />
-        </Grid>
       </Container>
     </>
   );
+}
+
+export async function getServerSideProps() {
+  await dbConnect();
+
+  return {
+    props: {
+      books: JSON.stringify(await Book.find()),
+    },
+  };
 }

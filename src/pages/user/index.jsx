@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
@@ -6,8 +6,15 @@ import Image from "next/image";
 import Link from "next/link";
 import HomeIcon from "@material-ui/icons/Home";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import GroupIcon from "@material-ui/icons/Group";
+import useWindowDimensions from "./../../utils/hooks/useWindowDimensions";
+import Profile from "./../../components/User/Profile/Profile.index";
+import dbConnect from "./../../utils/dbConnect";
+import withSession from "./../../utils/withSession";
+import User from "./../../models/User";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   headNav: {
     height: "64px",
     width: "100%",
@@ -37,7 +44,7 @@ const useStyles = makeStyles({
     cursor: "pointer",
   },
   leftNav: {
-    minHeight: "100vh",
+    minHeight: (props) => (props.width <= 600 ? "50vh" : "91vh"),
     backgroundColor: "white",
     width: "100%",
     height: "100%",
@@ -82,18 +89,60 @@ const useStyles = makeStyles({
     border: "1px solid #E4E7EB",
     marginTop: "23px",
   },
-});
+  navItem: {
+    backgroundColor: "#F6F9FD",
+    border: "none",
+    position: "relative",
+    justifyContent: "center",
+    width: "90%",
+    marginLeft: "5%",
+    height: "46px",
+    borderRadius: "4px",
+    cursor: "pointer",
+    "&:hover": {
+      boxShadow: "inset 3px 0px 0px #1665D8",
+    },
+    transition: theme.transitions.create(),
+  },
+  nicon: {
+    left: "20%",
+    top: "50%",
+    position: "absolute",
+    transform: "translate(-50%,-50%)",
+    color: "#66788A",
+  },
+  ntext: {
+    left: "45%",
+    top: "20%",
+    position: "absolute",
+    transform: "translate(-50%,-50%)",
+    color: "#66788A",
+    fontWeight: "500",
+    fontSize: "14px",
+    lineHeight: "20px",
+  },
+}));
 
-export default function Index() {
-  const classes = useStyles();
-  const [moveStage, setMoveStage] = useState(1);
+const userRoute = [
+  {
+    name: "profile",
+    text: "Profile",
+    icon: (props) => <DashboardIcon {...props} />,
+    display: (props) => <Profile {...props} />,
+  },
+  {
+    name: "changepass",
+    text: "Security",
+    icon: (props) => <GroupIcon {...props} />,
+    display: () => "You cannot change password now!",
+  },
+];
 
-  useEffect(() => {
-    const runFc = () => setMoveStage(moveStage < 6 ? moveStage + 1 : 1);
-    setTimeout(runFc, 100);
-
-    return clearTimeout(runFc);
-  });
+export default function Index({ passToChild }) {
+  const { width } = useWindowDimensions();
+  const classes = useStyles({ width });
+  const [currentRoute, setCurrentRoute] = useState(0);
+  const user = JSON.parse(passToChild.user);
 
   return (
     <>
@@ -141,19 +190,90 @@ export default function Index() {
                 <div
                   className={classes.avatar}
                   style={{
-                    backgroundImage: `url('/images/avatars/avt (${moveStage}).png')`,
+                    backgroundImage: `url('/images/avatars/avt (1).png')`,
                   }}
                 ></div>
-                <p className={classes.name}>{"@" + "Testaldaw"}</p>
-                <p className={classes.subName}>{"Testasadasldaw"}</p>
+                <p className={classes.name}>{"@" + user.displayName}</p>
+                <p className={classes.subName}>{user.username}</p>
               </div>
 
               <hr className={classes.hr} />
+
+              <Grid container>
+                {userRoute.map((elm, index) => (
+                  <Grid item xs={12} key={index}>
+                    <button
+                      onClick={() => setCurrentRoute(index)}
+                      className={classes.navItem}
+                      style={{
+                        boxShadow:
+                          currentRoute === index
+                            ? "inset 3px 0px 0px #1665D8"
+                            : "",
+                      }}
+                    >
+                      {elm.icon({ className: classes.nicon })}
+                      <p className={classes.ntext}>{elm.text}</p>
+                    </button>
+                  </Grid>
+                ))}
+              </Grid>
             </div>
           </Grid>
-          <Grid item lg={10} md={9} sm={8} xs={12}></Grid>
+          <Grid item lg={10} md={9} sm={8} xs={12}>
+            <div style={{ padding: "20px" }}>
+              {userRoute[currentRoute].display(passToChild)}
+            </div>
+          </Grid>
         </Grid>
       </Container>
     </>
   );
 }
+
+export const getServerSideProps = withSession(async function ({ req, res }) {
+  await dbConnect();
+
+  if (req.session.get("authKey")) {
+    const authKey = req.session.get("authKey");
+    const id = authKey.slice(0, 24);
+    const _pos = authKey.indexOf("_");
+    const hashPassword = authKey.slice(24, _pos);
+    const salt = authKey.slice(_pos + 1);
+
+    const user = await User.findOne({
+      $and: [{ _id: id }, { password: hashPassword }, { salt }],
+    });
+
+    if (!user) {
+      return {
+        redirect: {
+          destination: "/user/login",
+          permanent: false,
+        },
+      };
+    }
+
+    if (!user.admin) {
+      return {
+        redirect: {
+          destination: "/user/login",
+          permanent: false,
+        },
+      };
+    }
+    return {
+      props: {
+        passToChild: {
+          user: JSON.stringify(user),
+        },
+      },
+    };
+  } else
+    return {
+      redirect: {
+        destination: "/user/login",
+        permanent: false,
+      },
+    };
+});
