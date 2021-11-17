@@ -1,8 +1,3 @@
-import SearchIcon from "@material-ui/icons/Search";
-import React from "react";
-import HomeIcon from "@material-ui/icons/Home";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-
 let ROUTES = [
   {
     displayName: "login",
@@ -14,7 +9,7 @@ let ROUTES = [
     },
   },
   {
-    displayName: <HomeIcon />,
+    displayName: "Home",
     pathName: "/",
     withLayout: true,
     navDisplay: {
@@ -23,7 +18,7 @@ let ROUTES = [
     },
   },
   {
-    displayName: <SearchIcon />,
+    displayName: "Search",
     pathName: "/books/search",
     withLayout: true,
     navDisplay: {
@@ -32,7 +27,7 @@ let ROUTES = [
     },
   },
   {
-    displayName: <ExitToAppIcon />,
+    displayName: "Logout",
     pathName: "/user/logout",
     withLayout: false,
     navDisplay: {
